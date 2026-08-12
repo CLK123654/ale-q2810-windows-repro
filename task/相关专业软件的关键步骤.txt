@@ -1,0 +1,7 @@
+1.使用psql执行solution.sql，创建content_event、release_batch、published_rank和active_release等对象。
+2.通过PostgreSQL装载内容目录和base_events.csv，保留occurred_at与received_at两条时间线。
+3.读取release_plan.csv中的baseline边界，调用publish_batch生成首批不可变榜单并切换active_release。
+4.装载late_events.csv，按late_update边界再次调用publish_batch，事务内写入榜单、事件数和批次指针。
+5.使用窗口rank按click_count、ctr_pct、total_dwell_ms和content_id计算区域名次。
+6.通过PostgreSQL COPY导出release_batches.csv、published_ranks.csv、active_release.csv和rank_changes.csv。
+7.核对active_release只指向READY批次，发布说明与release_policy.json中的窗口、等待、观察和回滚字段一致。

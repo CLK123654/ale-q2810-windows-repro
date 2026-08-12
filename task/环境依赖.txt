@@ -1,0 +1,9 @@
+操作系统： Windows11。
+
+主软件：PostgreSQL17。psql.exe连接本机PostgreSQL服务，执行事务、约束、窗口函数、系统目录查询和CSV导出。
+
+代码执行依赖：PowerShell7和Python3.12。Python读取业务材料、组织psql命令并导出结果，榜单计算和事务提交仍由PostgreSQL完成。
+
+CPU/GPU：普通x64CPU可处理本批数据，GPU无需参与。磁盘：需要容纳输入材料、本地数据库、SQL和导出结果。超时：发布事务的锁等待时间取release_policy.json中的lock_wait_ms。
+
+主要风险是混用事件发生时间与接收时间、批次cutoff选错、榜单和发布指针分开提交，以及两名值班人员同时发布。数据库函数使用事务级锁，超过release_policy.json给出的等待预算便停止本次事务；发布说明记录观察字段和回滚方式。
